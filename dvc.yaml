@@ -1,27 +1,17 @@
 stages:
   train_cnn:
-    cmd: python train.py
+    cmd: python src/train.py
     deps:
-      - train.py
-      - model.py
-      - data/train
-      - data/val
-      - params.yaml
+    - data/train
+    - data/val
+    - src/model.py
+    - src/train.py
     params:
-      - train.epochs
-      - train.lr
-      - train.batch_size
+    - train.batch_size
+    - train.epochs
+    - train.lr
     outs:
-      - model/model.pt
+    - model/model.pt
     metrics:
-      - metrics.json
-
-  evaluate_cnn:
-    cmd: python evaluate.py
-    deps:
-      - evaluate.py
-      - model.py
-      - model/model.pt
-      - data/test
-    metrics:
-      - test_metrics.json
+    - metrics.json:
+        cache: false
