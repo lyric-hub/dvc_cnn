@@ -1,0 +1,27 @@
+stages:
+  train_cnn:
+    cmd: python train.py
+    deps:
+      - train.py
+      - model.py
+      - data/train
+      - data/val
+      - params.yaml
+    params:
+      - train.epochs
+      - train.lr
+      - train.batch_size
+    outs:
+      - model/model.pt
+    metrics:
+      - metrics.json
+
+  evaluate_cnn:
+    cmd: python evaluate.py
+    deps:
+      - evaluate.py
+      - model.py
+      - model/model.pt
+      - data/test
+    metrics:
+      - test_metrics.json
