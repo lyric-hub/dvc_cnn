@@ -1,0 +1,67 @@
+schema: '2.0'
+stages:
+  train_cnn:
+    cmd: python src/train.py
+    deps:
+    - path: data/Butterfly/train
+      hash: md5
+      md5: d22f36d84cf8f9dcee107dc7495751f9.dir
+      size: 322671133
+      nfiles: 12594
+    - path: data/Butterfly/valid
+      hash: md5
+      md5: 61f78567cc8c8fd485202b2ff5088478.dir
+      size: 13492484
+      nfiles: 500
+    - path: src/model.py
+      hash: md5
+      md5: 8f8cd6e0f3503bb46e4b9fa80752bb9f
+      size: 1100
+    - path: src/train.py
+      hash: md5
+      md5: f1fe671906651cb132b0b325ef74c26d
+      size: 1937
+    params:
+      params.yaml:
+        train.batch_size: 32
+        train.epochs: 10
+        train.lr: 0.001
+        train.train_dir: data/Butterfly/train
+        train.val_dir: data/Butterfly/valid
+    outs:
+    - path: metrics.json
+      hash: md5
+      md5: 1f2f219ea517cd85f3aa886eb0614a33
+      size: 22
+    - path: model/model.pt
+      hash: md5
+      md5: 9df270bd4b65a1ce8fa2f0163bb73b2f
+      size: 47851569
+  evaluate_cnn:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/Butterfly/test
+      hash: md5
+      md5: 67f99cee49b6a68d3ba4d562d7af3544.dir
+      size: 13568052
+      nfiles: 500
+    - path: model/model.pt
+      hash: md5
+      md5: 9df270bd4b65a1ce8fa2f0163bb73b2f
+      size: 47851569
+    - path: src/evaluate.py
+      hash: md5
+      md5: b6ab656c849552e8ddddb276a7915940
+      size: 1283
+    - path: src/model.py
+      hash: md5
+      md5: 8f8cd6e0f3503bb46e4b9fa80752bb9f
+      size: 1100
+    params:
+      params.yaml:
+        evaluate.test_dir: data/Butterfly/test
+    outs:
+    - path: test_metrics.json
+      hash: md5
+      md5: 9165fd7fb4fa70053fa7a6b13d12d068
+      size: 24
