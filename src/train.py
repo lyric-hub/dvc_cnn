@@ -8,13 +8,10 @@ from torchvision.datasets import ImageFolder
 from torch import nn, optim
 from model import SimpleCNN  # Import your model
 
-# Load training hyperparameters from params.yaml
-with open("params.yaml", "r") as f:
-    params = yaml.safe_load(f)["train"]
-
-# Directories
-train_dir = '/home/cyril-saju/Documents/OrthoFx/dvc_cnn/data/Butterfly/train'
-val_dir   = '/home/cyril-saju/Documents/OrthoFx/dvc_cnn/data/Butterfly/val'
+with open("params.yaml") as f:
+    params = yaml.safe_load(f)
+train_dir = params["train"]["train_dir"]
+val_dir = params["train"]["val_dir"]
 
 # Data transforms
 transform = transforms.Compose([
@@ -26,17 +23,17 @@ transform = transforms.Compose([
 train_dataset = ImageFolder(root=train_dir, transform=transform)
 val_dataset   = ImageFolder(root=val_dir, transform=transform)
 
-train_loader = DataLoader(train_dataset, batch_size=params["batch_size"], shuffle=True)
-val_loader   = DataLoader(val_dataset, batch_size=params["batch_size"], shuffle=False)
+train_loader = DataLoader(train_dataset, batch_size=params['train']["batch_size"], shuffle=True)
+val_loader   = DataLoader(val_dataset, batch_size=params["train"]["batch_size"], shuffle=False)
 
 # Model, loss, optimizer
 num_classes = len(train_dataset.classes)
 model = SimpleCNN(num_classes=num_classes)
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=params["lr"])
+optimizer = optim.Adam(model.parameters(), lr=params['train']["lr"])
 
 # Training loop
-for epoch in range(params["epochs"]):
+for epoch in range(params["train"]["epochs"]):
     model.train()
     for images, labels in train_loader:
         optimizer.zero_grad()

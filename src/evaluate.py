@@ -5,9 +5,14 @@ from torchvision import transforms
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
 from model import SimpleCNN
+import yaml
 
-# Paths
-test_dir = '/home/cyril-saju/Documents/OrthoFx/dvc_cnn/data/Butterfly/test'
+with open("params.yaml") as f:
+    params = yaml.safe_load(f)
+
+test_dir = params["evaluate"]["test_dir"]
+
+
 model_path = '/home/cyril-saju/Documents/OrthoFx/dvc_cnn/model/model.pt'
 
 # Transform (must match training)
